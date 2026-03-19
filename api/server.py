@@ -41,6 +41,26 @@ def serve_js(filename):
     return send_from_directory('../js', filename)
 
 
+@app.route('/img/<path:filename>')
+def serve_img(filename):
+    return send_from_directory('../img', filename)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory('..', 'favicon.ico')
+
+
+@app.route('/robots.txt')
+def robots():
+    return send_from_directory('..', 'robots.txt')
+
+
+@app.route('/sitemap.xml')
+def sitemap():
+    return send_from_directory('..', 'sitemap.xml')
+
+
 # ─── API: Juegos de itch.io ────────────────────────────────────────────────────
 
 @app.route('/api/games')
@@ -186,7 +206,7 @@ def health():
         "status": "ok",
         "itch_api_configured": bool(os.environ.get('ITCH_API_KEY')),
         "gmail_configured": True,
-        "version": "1.0.0"
+        "version": "1.1.0"
     })
 
 

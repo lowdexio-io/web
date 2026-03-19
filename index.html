@@ -4,12 +4,56 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LOWDEX.io — minimal experimental itch</title>
+  <meta name="description" content="LOWDEX.io es una plataforma experimental y minimalista que integra juegos de la plataforma itch.io, ofreciendo una experiencia de usuario optimizada y feedback directo.">
+  <meta name="keywords" content="itch.io, juegos, indie, plataforma, experimental, minimalista, feedback, API, desarrollo de juegos">
+  <meta name="author" content="LOWDEX.io">
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#111">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="LOWDEX.io">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lowdex.io/"> <!-- Reemplazar con URL real -->
+  <meta property="og:title" content="LOWDEX.io — minimal experimental itch">
+  <meta property="og:description" content="LOWDEX.io es una plataforma experimental y minimalista que integra juegos de la plataforma itch.io, ofreciendo una experiencia de usuario optimizada y feedback directo.">
+  <meta property="og:image" content="https://lowdex.io/img/logo.jpg"> <!-- Reemplazar con URL real -->
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://lowdex.io/"> <!-- Reemplazar con URL real -->
+  <meta property="twitter:title" content="LOWDEX.io — minimal experimental itch">
+  <meta property="twitter:description" content="LOWDEX.io es una plataforma experimental y minimalista que integra juegos de la plataforma itch.io, ofreciendo una experiencia de usuario optimizada y feedback directo.">
+  <meta property="twitter:image" content="https://lowdex.io/img/logo.jpg"> <!-- Reemplazar con URL real -->
+
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "LOWDEX.io",
+    "url": "https://lowdex.io/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://lowdex.io/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
 </head>
 <body>
   <div class="main-container">
     <header class="site-header">
-      <h1>LOWDEX.io</h1>
+      <a href="/" class="site-logo-link">
+        <img src="img/logo.jpg" alt="LOWDEX.io Logo" class="site-logo">
+      </a>
       <div class="header-desc">
         <span class="fake-api-indicator"></span> itch.io API • live feed
       </div>

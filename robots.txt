@@ -1,0 +1,15 @@
+# Robots.txt para LOWDEX.io
+# Permite que los motores de búsqueda indexen la plataforma
+
+User-agent: *
+Allow: /
+Allow: /api/games
+Allow: /api/health
+Disallow: /api/feedback
+Disallow: /data/
+
+# Sitemap
+Sitemap: https://lowdex.io/sitemap.xml
+
+# Crawl-delay (opcional)
+Crawl-delay: 1

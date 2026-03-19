@@ -1,387 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LOWDEX.io — minimal experimental itch</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: #f4f4f2;
-      color: #111;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      line-height: 1.5;
-      padding: 2rem 1.5rem;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .main-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    .site-header {
-      margin-bottom: 3rem;
-      border-bottom: 2px solid #222;
-      padding-bottom: 1.2rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: flex-end;
-      position: relative;
-    }
-
-    .site-header::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 20%;
-      width: 80px;
-      height: 4px;
-      background: #c7b9ff;
-      filter: blur(2px);
-      transition: 0.3s;
-    }
-
-    .site-header:hover::after {
-      left: 60%;
-      width: 150px;
-      background: #ffb9d3;
-    }
-
-    h1 {
-      font-size: clamp(2.5rem, 8vw, 5rem);
-      font-weight: 500;
-      letter-spacing: -0.03em;
-      text-transform: uppercase;
-      line-height: 0.9;
-      background: linear-gradient(130deg, #1a1a1a 30%, #5b4b8a);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
-      transform: rotate(-0.5deg) translateY(2px);
-      transition: transform 0.2s ease;
-    }
-
-    h1:hover {
-      transform: rotate(0deg) translateY(0);
-    }
-
-    .header-desc {
-      font-size: 1rem;
-      font-weight: 350;
-      text-transform: uppercase;
-      color: #555;
-      border-left: 3px solid #aaa;
-      padding-left: 1rem;
-      margin-bottom: 0.3rem;
-      letter-spacing: 1px;
-    }
-
-    .header-desc span {
-      background: #111;
-      color: #f0f0f0;
-      padding: 0.2rem 0.6rem;
-      font-size: 0.75rem;
-      margin-left: 0.5rem;
-      border-radius: 20px;
-    }
-
-    .section-label {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin: 2rem 0 1.5rem;
-    }
-
-    .section-label h2 {
-      font-weight: 380;
-      font-size: 1.6rem;
-      text-transform: lowercase;
-      border-right: 2px solid #333;
-      padding-right: 1.2rem;
-    }
-
-    .section-label .api-badge {
-      background: #e3e3e0;
-      border-radius: 30px;
-      padding: 0.3rem 1rem;
-      font-size: 0.8rem;
-      font-weight: 350;
-      box-shadow: inset 0 -1px 0 #bbb;
-      transition: 0.2s;
-    }
-
-    .section-label .api-badge:hover {
-      background: #111;
-      color: white;
-    }
-
-    .game-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1.8rem;
-      margin: 2.5rem 0 3rem;
-    }
-
-    .game-card {
-      background: #ffffffd6;
-      backdrop-filter: blur(2px);
-      border: 1px solid #eaeaea;
-      border-radius: 22px 8px 22px 8px;
-      transition: all 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.2);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      box-shadow: 0 10px 20px -12px rgba(0,0,0,0.2);
-    }
-
-    .game-card:hover {
-      border-radius: 8px 22px 8px 22px;
-      box-shadow: 16px 16px 0 -5px #f0ede3, 16px 16px 0 0 #222;
-      transform: translate(-6px, -6px);
-      background: white;
-      border-color: #b0a8d1;
-    }
-
-    .game-cover {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      background: #dbd5c7;
-      transition: filter 0.3s;
-      filter: grayscale(0.4) contrast(1.1);
-    }
-
-    .game-card:hover .game-cover {
-      filter: grayscale(0) contrast(1.2);
-    }
-
-    .card-content {
-      padding: 1rem 1rem 1.2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-    }
-
-    .game-title {
-      font-size: 1.2rem;
-      font-weight: 480;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      text-transform: uppercase;
-    }
-
-    .game-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.75rem;
-      color: #5f5f5f;
-      text-transform: uppercase;
-      border-top: 1px dashed #c3c3c3;
-      padding-top: 0.4rem;
-      margin-top: 0.2rem;
-    }
-
-    .game-author {
-      font-weight: 300;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 110px;
-    }
-
-    .game-price {
-      background: #eae5d9;
-      padding: 0.2rem 0.5rem;
-      border-radius: 40px;
-      font-weight: 500;
-      font-size: 0.7rem;
-    }
-
-    .loader {
-      padding: 3rem;
-      text-align: center;
-      font-size: 1.4rem;
-      font-weight: 300;
-      color: #aaa;
-      letter-spacing: 2px;
-      animation: pulse 1.8s infinite;
-    }
-
-    @keyframes pulse {
-      0% { opacity: 0.4; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.02); }
-      100% { opacity: 0.4; transform: scale(1); }
-    }
-
-    .error-message {
-      background: #ffefef;
-      border-left: 6px solid #ff6464;
-      padding: 1.5rem;
-      margin: 2rem 0;
-      font-weight: 320;
-      color: #3f0000;
-    }
-
-    .fake-api-indicator {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      background: #a7f0ba;
-      border-radius: 50%;
-      margin-right: 5px;
-      box-shadow: 0 0 5px #a7f0ba;
-      animation: blink 2s infinite;
-    }
-
-    @keyframes blink {
-      0%,100%{ opacity: 1; }
-      50%{ opacity: 0.3; }
-    }
-
-    @media (max-width: 500px) {
-      body { padding: 1rem; }
-      .site-header { flex-direction: column; align-items: start; gap: 0.5rem; }
-      .header-desc { border-left: none; padding-left: 0; }
-    }
-  </style>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div class="main-container">
     <header class="site-header">
       <h1>LOWDEX.io</h1>
       <div class="header-desc">
-        <span class="fake-api-indicator"></span> itch.io API • experimental feed
+        <span class="fake-api-indicator"></span> itch.io API • live feed
       </div>
     </header>
 
     <div class="section-label">
       <h2>━ featured games</h2>
-      <div class="api-badge">⚡ live from itch.io (mock)</div>
+      <div class="api-badge">⚡ live from itch.io</div>
     </div>
 
     <div id="game-grid" class="game-grid">
       <div class="loader">loading content ...</div>
     </div>
+
+    <div class="feedback-section">
+      <div class="section-label">
+        <h2>━ feedback</h2>
+        <div class="api-badge">✉️ contact us</div>
+      </div>
+      
+      <form id="feedback-form" class="feedback-form">
+        <div class="form-group">
+          <label for="name">Nombre</label>
+          <input type="text" id="name" name="name" required placeholder="Tu nombre">
+        </div>
+        <div class="form-group">
+          <label for="email">Correo Electrónico</label>
+          <input type="email" id="email" name="email" required placeholder="tu@email.com">
+        </div>
+        <div class="form-group">
+          <label for="message">Tu Criterio / Mensaje</label>
+          <textarea id="message" name="message" required placeholder="¿Qué opinas de la plataforma?"></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Enviar Feedback</button>
+        <div id="form-status" class="form-status"></div>
+      </form>
+    </div>
   </div>
 
-  <script>
-    (function() {
-      const MOCK_GAMES = [
-        {
-          id: "1",
-          title: "Caves of Nonsense",
-          cover_url: "https://picsum.photos/id/100/300/180",
-          author: "salted_pixels",
-          price: "Free"
-        },
-        {
-          id: "2",
-          title: "BRDGZ",
-          cover_url: "https://picsum.photos/id/1015/300/180",
-          author: "lowpoly club",
-          price: "$3.99"
-        },
-        {
-          id: "3",
-          title: "Wander//lost",
-          cover_url: "https://picsum.photos/id/1043/300/180",
-          author: "moody_studio",
-          price: "pay what you want"
-        },
-        {
-          id: "4",
-          title: "DATA SCULPTOR",
-          cover_url: "https://picsum.photos/id/104/300/180",
-          author: "v4p0rwave",
-          price: "Free"
-        },
-        {
-          id: "5",
-          title: "isometric aftermath",
-          cover_url: "https://picsum.photos/id/106/300/180",
-          author: "grid_snap",
-          price: "$1.99"
-        },
-        {
-          id: "6",
-          title: "SIGNAL LOSS",
-          cover_url: "https://picsum.photos/id/20/300/180",
-          author: "noise.js",
-          price: "Free"
-        },
-        {
-          id: "7",
-          title: "CHROMA PEAK",
-          cover_url: "https://picsum.photos/id/24/300/180",
-          author: "neon_ghost",
-          price: "$5.00"
-        },
-        {
-          id: "8",
-          title: "monument valley.exe",
-          cover_url: "https://picsum.photos/id/26/300/180",
-          author: "dreamware",
-          price: "Free"
-        }
-      ];
-
-      const gridEl = document.getElementById('game-grid');
-
-      function renderGames(gamesArray) {
-        if (!gamesArray || gamesArray.length === 0) {
-          gridEl.innerHTML = '<div class="error-message" style="background:#f9f2e0; border-left-color:#c4a24b;">✖ no games received</div>';
-          return;
-        }
-
-        const cardsHTML = gamesArray.map(game => {
-          const cover = game.cover_url || 'https://picsum.photos/300/180?grayscale';
-          return `
-            <article class="game-card">
-              <img class="game-cover" src="${cover}" alt="${game.title} cover" loading="lazy">
-              <div class="card-content">
-                <div class="game-title">${game.title}</div>
-                <div class="game-meta">
-                  <span class="game-author">${game.author || 'unknown'}</span>
-                  <span class="game-price">${game.price || '–'}</span>
-                </div>
-              </div>
-            </article>
-          `;
-        }).join('');
-
-        gridEl.innerHTML = cardsHTML;
-      }
-
-      function fetchItchGames() {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            resolve([...MOCK_GAMES]);
-          }, 600);
-        });
-      }
-
-      function loadContent() {
-        gridEl.innerHTML = '<div class="loader">⌛ contacting itch.io ...</div>';
-        fetchItchGames()
-          .then(games => renderGames(games))
-          .catch(() => {
-            gridEl.innerHTML = '<div class="error-message">⚡ failed to fetch from itch.io</div>';
-          });
-      }
-
-      loadContent();
-    })();
-  </script>
+  <script src="js/app.js"></script>
 </body>
 </html>

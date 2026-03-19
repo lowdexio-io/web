@@ -15,8 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const url = game.url || '#';
       const price = game.price || (game.min_price === 0 ? 'Free' : (game.min_price ? `$${(game.min_price/100).toFixed(2)}` : 'Free'));
       
+      const isAdult = game.classification === 'adult' || true; // Forzamos true para esta integración
       return `
-        <a href="${url}" target="_blank" rel="noopener noreferrer" class="game-card">
+        <a href="${url}" target="_blank" rel="noopener noreferrer" class="game-card ${isAdult ? 'adult-content' : ''}">
           <img class="game-cover" src="${cover}" alt="${game.title} cover" loading="lazy">
           <div class="card-content">
             <div class="game-title">${game.title}</div>
@@ -96,4 +97,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize
   loadContent();
+
+  // Register Service Worker for PWA
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then((registration) => {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, (err) => {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+    });
+  }
 });

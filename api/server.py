@@ -24,7 +24,7 @@ CORS(app)
 FEEDBACK_EMAIL = 'lowdex.io@gmail.com'
 
 
-# ─── Servir el frontend ────────────────────────────────────────────────────────
+# ─── Servir el frontend y archivos estáticos ──────────────────────────────────
 
 @app.route('/')
 def index():
@@ -61,6 +61,16 @@ def sitemap():
     return send_from_directory('..', 'sitemap.xml')
 
 
+@app.route('/manifest.json')
+def manifest():
+    return send_from_directory('..', 'manifest.json')
+
+
+@app.route('/sw.js')
+def service_worker():
+    return send_from_directory('..', 'sw.js')
+
+
 # ─── API: Juegos de itch.io ────────────────────────────────────────────────────
 
 @app.route('/api/games')
@@ -70,7 +80,8 @@ def get_games():
     Usa el endpoint real si hay API key configurada; si no, devuelve datos de ejemplo.
     """
     api_key = os.environ.get('ITCH_API_KEY', '')
-    result = get_games_for_api(api_key)
+    # Por defecto, obtenemos juegos para adultos (+18)
+    result = get_games_for_api(api_key, adult=True)
     return jsonify(result)
 
 
@@ -206,7 +217,7 @@ def health():
         "status": "ok",
         "itch_api_configured": bool(os.environ.get('ITCH_API_KEY')),
         "gmail_configured": True,
-        "version": "1.1.0"
+        "version": "1.2.0"
     })
 
 
